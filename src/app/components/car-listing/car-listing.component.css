@@ -405,4 +405,16 @@ width: 60%;
     .popup .popup_container .popup_content .form-container form .inputsContainer .form-group{
         width: 80%;
     }
+    .data_section .cars_list .sorting_section .sort_by{
+        width: 20%;
+    }
+    .data_section .cars_list .sorting_section select{
+        width: 40% ;
+    }
+}
+@media screen and (max-width: 992px) and (orientation: landscape) {
+    *{
+        font-size: calc(6px + .2rem) !important;
+    }
+    
 }
