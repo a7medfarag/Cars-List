@@ -1,0 +1,249 @@
+<div class="cust_container custom_position">
+    <app-navbar-component></app-navbar-component>
+    <div class="results_container">
+        <div class="results">
+            <p>
+                Results Page
+            </p>
+        </div>
+        <button id="addCar" (click) = 'showPopup()'>
+            <span class="material-symbols-outlined">
+                add
+                </span>
+                <span>add car</span>
+        </button>
+    </div>
+    <div class="data_section" >
+        <div class="filter_section" >
+            <div class="resetAll" (click)="resetAll($event)">
+                <p>
+                    Reset All
+                </p>
+            </div>
+            <div class="rating_selection">
+                <label for="customRange2" class="form-label">Average Day Rate</label>
+                <input type="range" name="rang_1" (change)="rangeValue($event)"  class="form-range" min="20" max="100" step="10" id="customRange2">
+            </div>
+            <div class="air_cond">
+                <p>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#air_cond" role="button" aria-expanded="false" aria-controls="air_cond">
+                        Air Conditioning
+                    </a>
+                </p>
+                <div class="collapse" id="air_cond" (change)="airValue($event)">
+                    <div>
+                        <input type="radio" name="radio_1" value="Yes"><label>Yes</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="radio_1" value="No"><label>No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="city_select">
+                <p>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#city_select" role="button" aria-expanded="false" aria-controls="city_select">
+                        City
+                    </a>
+                </p>
+                <div class="collapse" id="city_select" (change)="cityFilter($event)">
+                    <input type="radio" name="radio_2" value="Alexandria"><label>Alexandria</label>
+                    <input type="radio" name="radio_2" value="Cairo"><label>Cairo</label>
+                    <input type="radio" name="radio_2" value="Hurghada"><label>Hurghada</label>
+                    <input type="radio" name="radio_2" value="Giza"><label>Giza</label>
+                </div>
+            </div>
+            <div class="shift_type">
+                <p>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#shift_type" role="button" aria-expanded="false" aria-controls="shift_type">
+                        Shift Type
+                    </a>
+                </p>
+                <div class="collapse" id="shift_type" (change)="carType($event)">
+                    <input type="radio" name="radio_3" value="Manual"><label>Manual</label>
+                    <input type="radio" name="radio_3" value="Automatic"><label>Automatic</label>
+                </div>
+            </div>
+        </div>
+        <div class="cars_list" >
+            <div class="sorting_section">
+                <div class="sort_by">
+                    <p>
+                        Sort by
+                    </p>
+                </div>
+                <select (change) = 'sortData($event)' class="form-select" aria-label="Default select example">
+                    <option selected>Price</option>
+                    <option value="high">(high to low)</option>
+                    <option value="low">(low to high)</option>
+                    <option value="alphabetically">A to Z (alphabetically)</option>
+                </select>
+            </div>
+            <ul *ngIf="carsArr">
+                <li *ngFor = 'let car of carsArr'>
+                    <div class="left_section ms-3">
+                        <div class="car_img">
+                            <img [src]="imagePath+car.image" alt="" class="img-fluid">
+                        </div>
+                        <div class="left_content">
+                            <p class="title">
+                                {{car.carName}}
+                            </p>
+                            <p class="type">
+                                <span class="car_type">
+                                    {{car.carType}}
+                                </span>
+                                <span *ngIf ="car.carAccesss" class="air">
+                                    Air Conditioning
+                                </span>
+                            </p>
+                            <p class="city">
+                                <span>City:</span>
+                                <span class="city_name">
+                                    {{car.city}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="right_section">
+                       <p class="daily_rate">
+                            Daily Rate
+                       </p>
+                       <p class="price">
+                        <!-- {{car.price | currency:'USD':'code':'1.2-2'}} -->
+                        <span class="usd">
+                            USD
+                        </span>
+                        <span class="currency">
+                            {{car.price}}<span class="zeroes">.00</span>
+                        </span>
+                        
+                       </p>
+                       <button class="details">
+                        Details
+                       </button>
+                       <!-- <p class="daily_rate">
+                        
+                       </p> -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="popup" *ngIf="displayPopup">
+        <div class="popup_container">
+            <div class="popup_header">
+                <div class="popup_title">
+                    <p class="dashBoard">
+                        Dashboard / Cars /
+                    </p>
+                    <p class="add_car">
+                        Add Car
+                    </p>
+                </div>
+                <div class="close_popup" (click)="closePopup()">
+                    <img src="../../../assets/shared/images/close_btn.png" alt="" class="img-fluid">
+                </div>
+            </div>
+            <div class="popup_content">
+                <div class="form-container">
+                    <form [formGroup]="carsForm" (submit)="onSubmit()">
+                       <div class="inputsContainer">
+                        <div class="form-group mb-2 ">
+                            <label for="" >Car Name</label>
+                            <input formControlName="name" type="text" class="form-control" [ngClass] = "{'is-invalid' : submitted && f?.name?.errors}">
+                            <div class="" *ngIf = "submitted && f?.name?.errors" >
+                                <div class="text-danger" *ngIf="submitted && f?.name?.errors?.required">
+                                    this field is required
+                                </div>
+                                <div class="text-danger" *ngIf="submitted && f?.name?.errors?.name">
+                                    Please Enter Valid name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for=""> Daily Rate</label>
+                            <input formControlName="price" type="text" class="form-control" [ngClass] = "{'is-invalid' : submitted && f?.price?.errors}">
+                            <div class="" *ngIf="submitted && f?.price?.errors">
+                                <div class="text-danger" *ngIf="submitted && f?.price?.errors?.required">
+                                    this field is required
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+
+                       <div class="inputsContainer">
+                        <div class="form-group mb-2">
+                            <label> Car Photo</label>
+                            <input (change)="onSelectedFile($event)" type="file" class="form-control">
+                            <div class="" *ngIf="submitted && f?.image?.errors">
+                                <div class="text-danger" *ngIf="submitted && f?.image?.errors?.required">
+                                    this field is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for=""> City</label>
+                            <input formControlName="city" type="text" class="form-control" [ngClass] = "{'is-invalid' : submitted && f?.city?.errors}">
+                            <div class="" *ngIf="submitted && f?.city?.errors">
+                                <div class="text-danger" *ngIf="submitted && f?.city?.errors?.required">
+                                    this field is required
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+                       <div class="inputsContainer">
+                        <div class="form-group mb-2">
+                            <p class="input_title"> Transmission</p>
+                            <div class="air_inputs">
+                                <div>
+                                    <label for="">Manual</label>
+                                    <input formControlName="airCond" type="radio" value="Manual" class="form-control-input" [ngClass] = "{'is-invalid' : submitted && f?.airCond?.errors}">
+                                </div>
+                                <div>
+                                    <label for="">Automatic</label>
+                                    <input formControlName="airCond" type="radio" value="Automatic" class="form-control-input" [ngClass] = "{'is-invalid' : submitted && f?.airCond?.errors}">
+                                </div>
+                            </div>
+                            <div class="" *ngIf="submitted && f?.transmission?.errors">
+                                <div class="text-danger" *ngIf="submitted && f?.transmission?.errors?.required">
+                                    this field is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <p class="input_title">Air Conditioning</p>
+                                <div class="air_inputs">
+                                    <div>
+                                        <label for="">Yes</label>
+                                        <input formControlName="airCond" type="radio" value="yes" class="form-control-input" [ngClass] = "{'is-invalid' : submitted && f?.airCond?.errors}">
+                                    </div>
+                                    <div>
+                                        <label for="">No</label>
+                                        <input formControlName="airCond" type="radio" value="No" class="form-control-input" [ngClass] = "{'is-invalid' : submitted && f?.airCond?.errors}">
+                                    </div>
+                                </div>
+
+                              
+                            <div class="" *ngIf="submitted && f?.airCond?.errors">
+                                <div class="text-danger" *ngIf="submitted && f?.airCond?.errors?.required">
+                                    this field is required
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+
+                        <div class="custom_btn">
+                            <button type="submit" class="btn" value="Create"> 
+                                ADD CAR
+                            </button>
+                        </div>
+                       
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

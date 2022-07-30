@@ -1,0 +1,33 @@
+
+.cust_container{
+    padding: 0 1rem;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+.top_img{
+    max-width: 100%;
+    width: 8%;
+}
+.collapse ul{
+    margin: 0 auto; 
+}
+.collapse .navbar-nav .nav-item .nav-link{
+    color: var(--unnamed-color-4f6080);
+    font-size: .8rem;
+}
+.collapse .navbar-nav .nav-item .nav-link.active{
+font-weight: bold;
+border-bottom: 1px solid var(--unnamed-color-fe7d38);
+}
+.cust_container .profile_info{
+    color: var(--unnamed-color-4f6080);
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 992px) and (orientation: portrait){
+    .top_img{
+        width: 18%;
+    }
+}
